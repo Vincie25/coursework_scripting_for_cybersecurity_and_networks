@@ -14,7 +14,7 @@ def main(print_out=True, break_first=True) -> list:
         # avoids pylint W0612: Unused Variable warning
         eth = dpkt.ethernet.Ethernet(buf)
         ip = eth.data
-        tcp = ip.data
+        #tcp = ip.data
         source_ip = ip.src
         destination_ip = ip.dst
         #source_port = tcp.sport

@@ -10,7 +10,7 @@ def analyzer() -> None:
     for i in packets:
         eth = i
         ip = eth.data
-        tcp = ip.data
+        #tcp = ip.data
         source_ip = ip.src
         destination_ip = ip.dst
         #source_port = tcp.sport

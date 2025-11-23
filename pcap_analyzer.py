@@ -1,3 +1,5 @@
+"""used modules"""
+import socket
 import dpkt
 
 def main(print_out=True, break_first=True) -> list:
@@ -11,20 +13,23 @@ def main(print_out=True, break_first=True) -> list:
         # prefixing the variable name with unused_ makes this clear and
         # avoids pylint W0612: Unused Variable warning
         eth = dpkt.ethernet.Ethernet(buf)
-        if print_out:
-            print(f"#<INFO> eth ethernet packet: {repr(eth)}\n")
-
-        ip_ad = eth.data
-        if print_out:
-            print(f"#<INFO> eth.data: {repr(ip_ad)}")
-
-        packets.append(eth)
-
+        ip = eth.data
+        tcp = ip.data
+        source_ip = ip.src
+        destination_ip = ip.dst
+        #source_port = tcp.sport
+        #destination_port = tcp.dport
+        details_source = f"{socket.inet_ntoa(source_ip)}"
+        details_destination = f"{socket.inet_ntoa(destination_ip)}"
+        details = f"{details_source} -> {details_destination}"
+        packets.append(details)
         if break_first:  # stop after the first packet
             break
 
     open_file.close()
     return packets
 
+
 if __name__ == "__main__":
-    main()
+    packets = main(print_out=False, break_first=True)
+    print(packets)

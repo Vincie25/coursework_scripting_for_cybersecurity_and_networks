@@ -29,17 +29,11 @@ def stats() ->None:
     tcp_timestamps.sort()
     udp_timestamps.sort()
     igm_timestamps.sort()
-    first_tcpts = datetime.fromtimestamp(tcp_timestamps[0])
-    last_tcpts = datetime.fromtimestamp(tcp_timestamps[-1])
-    first_udpts = datetime.fromtimestamp(udp_timestamps[0])
-    last_udpts = datetime.fromtimestamp(udp_timestamps[-1])
-    first_igmts = datetime.fromtimestamp(igm_timestamps[0])
-    last_igmts = datetime.fromtimestamp(igm_timestamps[-1])
 
     print(f"{ipcounter}")
-    print(f"{tcpcounter} {first_tcpts} {last_tcpts}")
-    print(f"{udpcounter} {first_udpts} {last_udpts}")
-    print(f"{igmcounter} {first_igmts} {last_igmts}")
+    print(f"{tcpcounter} {tcp_timestamps[0]} {tcp_timestamps[-1]}")
+    print(f"{udpcounter} {udp_timestamps[0]} {udp_timestamps[-1]}")
+    print(f"{igmcounter} {igm_timestamps[0]} {igm_timestamps[-1]}")
 
 
 if __name__ == "__main__":

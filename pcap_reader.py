@@ -1,6 +1,6 @@
 """import dpkt to read the in the frame"""
+from datetime import datetime
 import dpkt
-
 
 def main(print_out=True, break_first=True) -> list:
     """Going through the ethernetframe of the 1st package"""
@@ -21,7 +21,7 @@ def main(print_out=True, break_first=True) -> list:
             if print_out:
                 print(f"#<INFO> eth.data: {repr(ip_ad)}")
 
-            packets.append((ts, eth))
+            packets.append((datetime.fromtimestamp(ts), eth))
 
             if break_first:  # stop after the first packet
                 break    

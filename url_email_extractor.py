@@ -5,21 +5,25 @@ import dpkt
 def find_download(pcap):
     """in current form, finds any gif files downloaded and prints
        request source (Downloader), gif URI and destination (provider) IP"""
-    found = False
+    jpg_found = False
     for (time_s, buf) in pcap:
         try:
             eth = dpkt.ethernet.Ethernet(buf)
             ip_ad = eth.data
             src = socket.inet_ntoa(ip_ad.src)
             dst = socket.inet_ntoa(ip_ad.dst)
-            tcp = ip_ad.data
+            pkt = ip_ad.data
 
-            http = dpkt.http.Request(tcp.data)
+            http = dpkt.http.Request(pkt.data)
             if http.method == "GET":
                 uri = http.uri.lower()
                 if ".jpg" in uri:
                     print(f"[!] {src} downloaded {uri} from {dst}")
-                    found = True
+                    jpg_found = True
+                elif ".gif" in uri:
+                    print(f"[!] {src} downloaded {uri} from {dst}")
+                    gif_found = True
+
         except Exception:
             # necessary as many packets would otherwise generate an error
             pass

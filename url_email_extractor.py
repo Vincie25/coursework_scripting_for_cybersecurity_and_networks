@@ -6,6 +6,7 @@ def find_download(pcap):
     """in current form, finds any gif files downloaded and prints
        request source (Downloader), gif URI and destination (provider) IP"""
     jpg_found = False
+    gif_found = False
     for (time_s, buf) in pcap:
         try:
             eth = dpkt.ethernet.Ethernet(buf)
@@ -27,12 +28,12 @@ def find_download(pcap):
         except Exception:
             # necessary as many packets would otherwise generate an error
             pass
-    return found
+    return jpg_found,gif_found  
 
 
 def main():
     # should get results with filtered2.pcap but none with filtered3.pcap
-    pcap_file = "filtered2.pcap"
+    pcap_file = "evidence-packet-analysis.pcap"
     f = open(pcap_file, "rb")
     pcap = dpkt.pcap.Reader(f)
 

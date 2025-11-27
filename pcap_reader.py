@@ -1,6 +1,7 @@
 """import dpkt to read the in the frame"""
 from datetime import datetime
 import dpkt
+from pcap_analyzer import analyzer
 
 def main(print_out=True, break_first=True) -> list:
     """Going through the ethernetframe of the 1st package"""

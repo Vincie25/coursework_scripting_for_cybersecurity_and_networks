@@ -5,9 +5,9 @@ import networkx as nx
 from pcap_reader import main
 
 
-plt.figure(figsize=(14,6))
+plt.figure(figsize=(28,12))
 packets = main(print_out=False, break_first=False)
-IP = nx.Graph()
+IP = nx.DiGraph()
 ## Add your code here
 for unused_ts, i in packets:
     eth = i

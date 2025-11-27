@@ -33,7 +33,7 @@ def stats() ->None:
     mean_value = len(pkt)
     print(f"The mean value: {mean_value}")
     for unused_key, data in protocols.items():
-        if data["timestamps"]:  # Nur wenn Pakete vorhanden
+        if data["timestamps"]:
             data["timestamps"].sort()
             print(f"{data['name']}: {data['counter']}, {data['timestamps'][0]}, {data['timestamps'][-1]}")
 

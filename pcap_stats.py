@@ -21,8 +21,7 @@ def stats() ->None:
         "name": "IGMP",
         "counter": 0,
         "timestamps": []
-    }
-}
+    } }
     for ts, pkt in packets:
         eth = pkt
         if eth.type==dpkt.ethernet.ETH_TYPE_IP:

@@ -31,7 +31,7 @@ def stats() ->None:
                 protocols[ip.p]["timestamps"].append(ts)
     mean_value = len(pkt)
     print(f"The mean value: {mean_value}")
-    for unused_key, data in protocols.items():
+    for protocol, data in protocols.items():
         if data["timestamps"]:
             data["timestamps"].sort()
             print(f"{data['name']}: {data['counter']}, {data['timestamps'][0]}, {data['timestamps'][-1]}")

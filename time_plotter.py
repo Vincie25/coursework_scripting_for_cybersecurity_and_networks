@@ -4,15 +4,19 @@ from statistics import mean, stdev
 import matplotlib.pyplot as plt
 from pcap_reader import main
 
-def time_plot():
+def time_plot() -> None:
+    """Analyzes the timestamps of all packets in the PCAP file, groups them into
+    fixed-size time intervals, and visualizes the number of packets per interval
+    in a line plot. This provides an overview of the network traffic volume
+    over time."""
     packets = main(print_out=False, break_first=False)
     interval_size = timedelta(seconds=5)
     start = packets[0][0]
     end = start + interval_size
     count = 0
-    interval_times = []
-    interval_counts = []
-    for ts, pkt in packets:
+    interval_times: list = []
+    interval_counts: list = []
+    for ts, unsused_pkt in packets:
         if ts < end:
             count += 1
         else:

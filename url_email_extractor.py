@@ -1,14 +1,18 @@
 import socket
 import dpkt
+import re
+import os
 
 
-def find_download(pcap):
+def find_emails_and_images(pcap):
     """in current form, finds any gif files downloaded and prints
        request source (Downloader), gif URI and destination (provider) IP"""
-    jpg_found = False
-    jpeg_found = False
-    gif_found = False
-    png_found = False
+    to_emails = set()
+    from_emails = set()
+    image_urls = set()
+    image_filenames = set()
+
+    email_pattern = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
     for (time_s, buf) in pcap:
         try:
             eth = dpkt.ethernet.Ethernet(buf)
@@ -16,42 +20,57 @@ def find_download(pcap):
             src = socket.inet_ntoa(ip_ad.src)
             dst = socket.inet_ntoa(ip_ad.dst)
             pkt = ip_ad.data
-
-            http = dpkt.http.Request(pkt.data)
-            if http.method == "GET":
-                uri = http.uri.lower()
-                if ".jpg" in uri:
-                    print(f"[!] {src} downloaded {uri} from {dst}")
-                    jpg_found = True
-                elif ".jpeg" in uri:
-                    print(f"[!] {src} downloaded {uri} from {dst}")
-                    jpeg_found = True
-                elif ".gif" in uri:
-                    print(f"[!] {src} downloaded {uri} from {dst}")
-                    gif_found = True
-                elif ".png" in uri:
-                    print(f"[!] {src} downloaded {uri} from {dst}")
-                    png_found = True
-                
-
+            
+            try:
+                http = dpkt.http.Request(pkt.data)
+                if http.method == "GET":
+                    uri = http.uri.lower()
+                    if re.search(r"\.(jpg|jpeg|gif|png)($|\?)", uri, re.IGNORECASE):
+                        host = http.headers.get("host", "")
+                        if host:
+                            full_url = f"https://{host}{uri}"
+                            image_urls.add(full_url)
+                            uri_without_params = uri.split('?')[0]
+                            filename =os.path.basename(uri_without_params)
+                            if filename:
+                                image_filenames.add(filename)
+            except Exception:
+                pass
+            if pkt.dport==25 or pkt.sport==25:
+                try:
+                    payload = pkt.data.decode('utf-8')
+                    to_match = re.search('^To:\s*(.+)$', payload, re.MULTILINE|re.IGNORECASE)
+                    if to_match:
+                        emails = re.findall(email_pattern, to_match.group(1))
+                        to_emails.update(emails)
+                    from_match = re.search('^From:\s*(.+)$', payload, re.MULTILINE|re.IGNORECASE)
+                    if to_match:
+                        emails = re.findall(email_pattern, from_match.group(1))
+                        from_emails.update(emails)
+                except Exception:
+                    pass
         except Exception:
             # necessary as many packets would otherwise generate an error
             pass
-    return jpg_found, gif_found, jpeg_found, png_found  
+    return to_emails, from_emails, image_urls, image_filenames
 
 
 def main():
     # should get results with filtered2.pcap but none with filtered3.pcap
     pcap_file = "evidence-packet-analysis.pcap"
-    f = open(pcap_file, "rb")
-    pcap = dpkt.pcap.Reader(f)
+    with open(pcap_file, "rb") as f:
+        pcap = dpkt.pcap.Reader(f)
+        print(f'[*] Analysing {pcap_file} for jpg files')
+        to_emails, from_emails, image_urls, image_filenames = find_emails_and_images(pcap)
+        for email in sorted(to_emails):
+            print(f"  {email}")
+        for email in sorted(from_emails):
+            print(f"  {email}")
+        for url in sorted(image_urls):
+            print(f" {url}")
+        for filename in sorted(image_filenames):
+            print(f" {filename}")
 
-    print(f"[*] Analysing {pcap_file} for jpg files")
-    # call find_download which prints results
-    result = find_download(pcap)
-    if result is False:
-        print("No jpg downloads found in this file")
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

@@ -3,9 +3,8 @@ import dpkt
 from pcap_reader import main
 
 
-def stats() ->None:
+def stats(packets) ->None:
     """total amount of packages and there type"""
-    packets = main(print_out=False, break_first=False)
     protocols = {
     dpkt.ip.IP_PROTO_TCP: {
         "name": "TCP",
@@ -37,4 +36,5 @@ def stats() ->None:
             print(f"{data['name']}: {data['counter']}, {data['timestamps'][0]}, {data['timestamps'][-1]}")
 
 if __name__ == "__main__":
-    stats()
+    packets = main("evidence-packet-analysis.pcap", print_out=False, break_first=False)
+    stats(packets)

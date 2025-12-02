@@ -33,7 +33,11 @@ def stats(packets) ->None:
     for unused_protocol, data in protocols.items():
         if data["timestamps"]:
             data["timestamps"].sort()
-            print(f"{data['name']}: {data['counter']}, {data['timestamps'][0]}, {data['timestamps'][-1]}")
+            print(f"{data['name']}:"
+                  f"{data['counter']}," 
+                  f"{data['timestamps'][0]},"
+                  f"{data['timestamps'][-1]}")
+
 
 if __name__ == "__main__":
     packets = main("evidence-packet-analysis.pcap", print_out=False, break_first=False)

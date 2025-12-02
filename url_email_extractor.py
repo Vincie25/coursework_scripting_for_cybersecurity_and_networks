@@ -1,7 +1,7 @@
 import socket
-import dpkt
-import re
 import os
+import re
+import dpkt
 
 
 def find_emails_and_images(pcap):

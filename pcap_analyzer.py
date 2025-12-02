@@ -20,5 +20,5 @@ def analyzer(pcap) -> None:
             print(f"{key} - {value}")
 
 if __name__ == "__main__":
-    packets = main("evidence-packet-analysis" ,print_out=False, break_first=False)
+    packets = main("evidence-packet-analysis.pcap" ,print_out=False, break_first=False)
     analyzer(packets)

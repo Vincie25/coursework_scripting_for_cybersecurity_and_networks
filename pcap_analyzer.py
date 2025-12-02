@@ -3,13 +3,12 @@ import socket
 import dpkt
 from pcap_reader import main
 
-def analyzer() -> None:
+def analyzer(pcap) -> None:
     """Analyzing readed Data"""
-    packets = main(print_out=False, break_first=False)
     flows:dict = {}
 
     ## Add your code here
-    for unused_ts, i in packets:
+    for unused_ts, i in pcap:
         eth = i
         ip = eth.data
         source_ip = ip.src
@@ -21,4 +20,5 @@ def analyzer() -> None:
             print(f"{key} - {value}")
 
 if __name__ == "__main__":
-    analyzer()
+    packets = main("evidence-packet-analysis" ,print_out=False, break_first=False)
+    analyzer(packets)

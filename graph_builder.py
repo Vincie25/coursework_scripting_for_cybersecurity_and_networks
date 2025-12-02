@@ -3,7 +3,6 @@ import socket
 import matplotlib.pyplot as plt 
 import networkx as nx
 from pcap_reader import main
-from pcap_analyzer import analyzer
 
 
 def graph(pcap) -> None:
@@ -24,6 +23,11 @@ def graph(pcap) -> None:
     nx.draw_networkx(IP, pos, with_labels=True, font_weight='bold')
     edge_labels = nx.get_edge_attributes(IP, 'weight')
     nx.draw_networkx_edge_labels(IP, pos, edge_labels=edge_labels)
+    print(f"Anzahl Knoten: {IP.number_of_nodes()}")
+    print(f"Anzahl Kanten: {IP.number_of_edges()}")
+    print(f"Schwach zusammenhängend: {nx.is_weakly_connected(IP)}")
+    print(f"Anzahl Komponenten: {len(list(nx.weakly_connected_components(IP)))}")
+    plt.savefig("network_graph.png")
     plt.show()
 
 if __name__ == "__main__":

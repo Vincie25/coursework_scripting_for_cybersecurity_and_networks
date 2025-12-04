@@ -6,7 +6,15 @@ from pcap_reader import main
 
 
 def graph(pcap) -> None:
-    counts = {}
+    """
+    Generate and visualize a directed IP communication graph from a pcap packet list.
+
+    Each packet is evaluated based on its source and destination IP address. 
+    The function counts occurrences of each (src → dst) flow, constructs a 
+    directed NetworkX graph where edge weights represent communication frequency, 
+    and visualizes it using matplotlib. Graph statistics are printed to stdout.
+    """
+    counts:dict = {}
     plt.figure(figsize=(28,12))
     ## Add your code here
     for unused_ts, i in pcap:

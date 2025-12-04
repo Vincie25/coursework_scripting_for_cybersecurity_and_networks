@@ -4,7 +4,7 @@ import sys
 import dpkt
 
 
-def main(pcapfile, print_out=True, break_first=True) -> list:
+def main(pcapfile:str, print_out:bool=True, break_first:bool=True) -> list:
     """Going through the ethernetframe of the 1st package"""
     packets = []
     try:

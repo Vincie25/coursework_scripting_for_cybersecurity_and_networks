@@ -5,7 +5,12 @@ import dpkt
 
 
 def main(pcapfile:str, print_out:bool=True, break_first:bool=True) -> list:
-    """Going through the ethernetframe of the 1st package"""
+    """Parse a pcap file and extract timestamped Ethernet frames.
+
+    This function opens a pcap file, iterates through its packets, and converts
+    each raw buffer into a dpkt Ethernet object. The result is returned as a list
+    of tuples containing the packet timestamp (converted to a datetime object)
+    and the decoded Ethernet frame."""
     packets = []
     try:
         open_file = open(pcapfile, "rb")

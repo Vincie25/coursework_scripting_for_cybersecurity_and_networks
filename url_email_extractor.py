@@ -26,7 +26,8 @@ def find_emails_and_images(pcap) -> tuple[set, set, set, set]:
                 http = dpkt.http.Request(tcp.data)
                 if http.method == "GET":
                     uri = http.uri
-                if uri and re.search(r"\.(jpg|jpeg|gif|png)($|\?)", uri, re.IGNORECASE):
+                if uri and re.search(r"\.(jpg|jpeg|gif|png)($|\?)",
+                                     uri, re.IGNORECASE):
                     host = http.headers.get("host", "")
                     if host:
                         image_urls.add(f"http://{host}{uri}")
@@ -36,14 +37,23 @@ def find_emails_and_images(pcap) -> tuple[set, set, set, set]:
             # Mail parsing
             if tcp.sport in (25, 587) or tcp.dport in (25, 587):
                 payload = tcp.data.decode('utf-8', errors='ignore')
-                match = re.search(r"^To:\s*(.+)$", payload, re.MULTILINE | re.IGNORECASE)
+                match = re.search(r"^To:\s*(.+)$",
+                                  payload,
+                                  re.MULTILINE | re.IGNORECASE)
                 if match:
-                    to_emails.update(re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
-                                                match.group(1)))
-                match = re.search(r"^From:\s*(.+)$", payload, re.MULTILINE | re.IGNORECASE)
+                    to_emails.update(
+                        re.findall(
+                            r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+                            match.group(1))
+                        )
+                match = re.search(r"^From:\s*(.+)$",
+                                  payload,
+                                  re.MULTILINE | re.IGNORECASE)
                 if match:
-                    from_emails.update(re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
-                                                  match.group(1)))
+                    from_emails.update(
+                        re.findall(
+                            r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+                            match.group(1)))
         except Exception:
             pass
 
@@ -58,7 +68,10 @@ def reader():
         pcap = dpkt.pcap.Reader(f)
         print("============ URL and E-Mail extractor ============")
         print(f'[*] Analysing {pcap_file}')
-        to_emails, from_emails, image_urls, image_filenames = find_emails_and_images(pcap)
+        (to_emails,
+         from_emails,
+         image_urls,
+         image_filenames) = find_emails_and_images(pcap)
         print("To Emails:")
         print("----------- Mails -----------")
         for email in sorted(to_emails):

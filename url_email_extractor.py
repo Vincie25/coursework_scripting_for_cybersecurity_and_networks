@@ -71,11 +71,11 @@ def reader():
         print("Image URLs:")
         print("----------- URLs -----------")
         for url in sorted(image_urls):
-            print(f" {url}")
+            print(f"  {url}")
         print("Image Filenames:")
         print("----------- Filenames -----------")
         for filename in sorted(image_filenames):
-            print(f" {filename}")
+            print(f"  {filename}")
         print("============== End ===============")
 
 

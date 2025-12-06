@@ -13,7 +13,9 @@ def stats(packets) ->None:
     protocols:dict = {
     dpkt.ip.IP_PROTO_TCP: {"name": "TCP", "counter": 0, "timestamps": []},
     dpkt.ip.IP_PROTO_UDP: {"name": "UDP", "counter": 0, "timestamps": []},
-    dpkt.ip.IP_PROTO_IGMP: {"name": "IGMP", "counter": 0, "timestamps": []} 
+    dpkt.ip.IP_PROTO_IGMP: {"name": "IGMP", "counter": 0, "timestamps": []},
+    dpkt.ip.IP_PROTO_ICMP: {"name": "IGMP", "counter": 0, "timestamps": []},
+    dpkt.ip.IP_PROTO_ICMP6: {"name": "IGMP", "counter": 0, "timestamps": []}
     }
     for ts, pkt in packets:
         eth = pkt
@@ -22,7 +24,7 @@ def stats(packets) ->None:
             if ip.p in protocols:
                 protocols[ip.p]["counter"]+=1
                 protocols[ip.p]["timestamps"].append(ts)
-    mean_value = len(packets)
+        mean_value = len(pkt)
     print(f"The mean value: {mean_value}")
     for unused_protocol, data in protocols.items():
         if data["timestamps"]:

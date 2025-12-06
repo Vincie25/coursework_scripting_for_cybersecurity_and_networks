@@ -23,7 +23,7 @@ def find_emails_and_images(pcap):
                 continue
             src_port = tcp.sport
             dst_port = tcp.dport
-            if dst_port==80:
+            if dst_port==80 or dst_port == 443:
                 http = dpkt.http.Request(tcp.data)
                 if http.method == "GET":
                     uri = http.uri
@@ -57,20 +57,26 @@ def reader():
     pcap_file = "evidence-packet-analysis.pcap"
     with open(pcap_file, "rb") as f:
         pcap = dpkt.pcap.Reader(f)
+        print("============ URL and E-Mail extractor ============")
         print(f'[*] Analysing {pcap_file}')
         to_emails, from_emails, image_urls, image_filenames = find_emails_and_images(pcap)
-        print("To Email")
+        print("To Email:")
+        print("----------- Mails ----------")
         for email in sorted(to_emails):
             print(f"  {email}")
-        print("From Email")
+        print("From Email:")
+        print("----------- Mails ----------")
         for email in sorted(from_emails):
             print(f"  {email}")
-        print("Images")
+        print("Image URLs:")
+        print("----------- URLs ----------")
         for url in sorted(image_urls):
             print(f" {url}")
-        print("Filename")
+        print("Image Filenames:")
+        print("----------- Filenames ----------")
         for filename in sorted(image_filenames):
             print(f" {filename}")
+        print("============== End ===============")
 
 
 if __name__ == '__main__':

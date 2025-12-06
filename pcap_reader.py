@@ -15,6 +15,7 @@ def main(pcapfile:str, print_out:bool=True, break_first:bool=True) -> list:
     try:
         open_file = open(pcapfile, "rb")
         pcap = dpkt.pcap.Reader(open_file)
+        sys.stderr.write("File opened")
         for ts, buf in pcap:
             # each tuple contains a timestamp
             # prefixing the variable name with unused_ makes this clear and
@@ -39,6 +40,7 @@ def main(pcapfile:str, print_out:bool=True, break_first:bool=True) -> list:
         sys.stderr.write("Parser error")
     finally:
         open_file.close()
+        sys.stderr.write("File closed")
     return packets
 
 

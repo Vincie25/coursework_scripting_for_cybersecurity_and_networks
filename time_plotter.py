@@ -15,7 +15,7 @@ def time_plot(packets) -> None:
     count = 0
     interval_times: list = []
     interval_counts: list = []
-    for ts, unsused_pkt in packets:
+    for ts, unused_pkt in packets:
         if ts < end:
             count += 1
         else:

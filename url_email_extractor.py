@@ -4,7 +4,7 @@ import re
 import dpkt
 
 
-def find_emails_and_images(pcap):
+def find_emails_and_images(pcap) -> tuple[set, set, set, set]:
     """in current form, finds any gif files downloaded and prints
        request source (Downloader), gif URI and destination (provider) IP"""
     to_emails = set()
@@ -12,7 +12,7 @@ def find_emails_and_images(pcap):
     image_urls = set()
     image_filenames = set()
     email_pattern = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-    for (time_s, buf) in pcap:
+    for (unused_time_s, buf) in pcap:
         try:
             eth = dpkt.ethernet.Ethernet(buf)
             ip_ad = eth.data
@@ -53,6 +53,7 @@ def find_emails_and_images(pcap):
 
 
 def reader():
+    """Reading data of the pcap file"""
     # should get results with filtered2.pcap but none with filtered3.pcap
     pcap_file = "evidence-packet-analysis.pcap"
     with open(pcap_file, "rb") as f:

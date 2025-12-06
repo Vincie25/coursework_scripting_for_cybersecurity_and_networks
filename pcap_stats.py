@@ -3,16 +3,16 @@ import dpkt
 from pcap_reader import main
 
 
-def stats(packets) ->None:
+def stats(packets: any) -> None:
     """Compute basic protocol statistics from a list of parsed packets.
     This function iterates through all Ethernet frames, identifies IP packets,
-    categorizes them by protocol (e.g. TCP, UDP, IGMP), and records both the packet
+    categorizes them by protocol, and records both the packet
     count and the timestamps of their occurrences. Additionally, it prints the
     earliest and latest timestamp for each protocol."""
-    protocols:dict = {}
+    protocols: dict = {}
     for ts, pkt in packets:
         eth = pkt
-        if eth.type==dpkt.ethernet.ETH_TYPE_IP:
+        if eth.type == dpkt.ethernet.ETH_TYPE_IP:
             ip = eth.data
             if ip.p not in protocols:
                 protocols[ip.p] = {
@@ -24,7 +24,11 @@ def stats(packets) ->None:
             protocols[ip.p]["counter"] += 1
             protocols[ip.p]["timestamps"].append(ts)
             protocols[ip.p]["lengths"].append(len(eth))
-    print(f"{'Protocol':<12} {'Count':>8} {'First':>27} {'Last':>27} {'Mean Length':>15}")
+    print(f"{'Protocol':<12}"
+          f"{'Count':>8}"
+          f"{'First':>27}"
+          f"{'Last':>27}"
+          f"{'Mean Length':>15}")
     print("-" * 100)
     for unused_protocol, data in protocols.items():
         name = data['name']
@@ -38,5 +42,6 @@ def stats(packets) ->None:
 
 
 if __name__ == "__main__":
-    packets = main("evidence-packet-analysis.pcap", print_out=False, break_first=False)
-    stats(packets)
+    PCAP = "evidence-packet-analysis.pcap"
+    packet = main(PCAP, printout=False, brkfirst=False)
+    stats(packet)

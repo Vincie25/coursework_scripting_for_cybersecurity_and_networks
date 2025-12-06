@@ -4,11 +4,11 @@ import sys
 import dpkt
 
 
-def main(pcapfile:str, print_out:bool=True, break_first:bool=True) -> list:
+def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> list:
     """Parse a pcap file and extract timestamped Ethernet frames.
 
     This function opens a pcap file, iterates through its packets, and converts
-    each raw buffer into a dpkt Ethernet object. The result is returned as a list
+    each buffer into a dpkt Ethernet object. The result is returned as a list
     of tuples containing the packet timestamp (converted to a datetime object)
     and the decoded Ethernet frame."""
     packets = []
@@ -21,16 +21,16 @@ def main(pcapfile:str, print_out:bool=True, break_first:bool=True) -> list:
             # prefixing the variable name with unused_ makes this clear and
             # avoids pylint W0612: Unused Variable warning
             eth = dpkt.ethernet.Ethernet(buf)
-            if print_out:
+            if printout:
                 sys.stderr.write(f"#<INFO> eth ethernet packet: {repr(eth)}\n")
 
             ip_ad = eth.data
-            if print_out:
+            if printout:
                 sys.stderr.write(f"#<INFO> eth.data: {repr(ip_ad)}")
 
             packets.append((datetime.fromtimestamp(ts), eth))
 
-            if break_first:  # stop after the first packet
+            if brkfirst:  # stop after the first packet
                 break
     except IOError:
         sys.stderr.write("File not found")

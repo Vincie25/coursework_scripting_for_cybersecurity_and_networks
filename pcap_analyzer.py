@@ -1,13 +1,12 @@
 """used modules"""
 import socket
-import dpkt
 from pcap_reader import main
+
 
 def analyzer(pcap) -> None:
     """Analyzing readed Data"""
-    flows:dict = {}
+    flows: dict = {}
 
-    ## Add your code here
     for unused_ts, i in pcap:
         eth = i
         ip = eth.data
@@ -19,6 +18,8 @@ def analyzer(pcap) -> None:
         for key, value in sorted_flows:
             print(f"{key} - {value}")
 
+
 if __name__ == "__main__":
-    packets = main("evidence-packet-analysis.pcap" ,print_out=False, break_first=False)
+    PCAP = "evidence-packet-analysis.pcap"
+    packets = main(PCAP, printout=False, brkfirst=False)
     analyzer(packets)

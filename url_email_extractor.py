@@ -1,5 +1,4 @@
 """Used module"""
-import socket
 import os
 import re
 import dpkt

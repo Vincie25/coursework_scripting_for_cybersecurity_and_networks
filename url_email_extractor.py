@@ -11,44 +11,42 @@ def find_emails_and_images(pcap) -> tuple[set, set, set, set]:
     from_emails = set()
     image_urls = set()
     image_filenames = set()
-    email_pattern = r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
     for (unused_time_s, buf) in pcap:
         try:
-            eth = dpkt.ethernet.Ethernet(buf)
-            ip_ad = eth.data
+            ip_ad = dpkt.ethernet.Ethernet(buf).data
             if not isinstance(ip_ad, dpkt.ip.IP):
                 continue
             tcp = ip_ad.data
             if not isinstance(tcp, dpkt.tcp.TCP):
                 continue
-            src_port = tcp.sport
-            dst_port = tcp.dport
-            if dst_port==80:
+            uri = ""
+            filename = ""
+            # HTTP parsing
+            if tcp.dport == 80:
                 http = dpkt.http.Request(tcp.data)
                 if http.method == "GET":
                     uri = http.uri
-                    if re.search(r"\.(jpg|jpeg|gif|png)($|\?)", uri, re.IGNORECASE):
-                        host = http.headers.get("host", "")
-                        if host:
-                            full_url = f"http://{host}{uri}"
-                            image_urls.add(full_url)
-                            uri_without_params = uri.split('?')[0]
-                            filename =os.path.basename(uri_without_params)
-                            if filename:
-                                image_filenames.add(filename)
-            if src_port==25 or dst_port==25 or src_port==587 or dst_port==587:
+                if uri and re.search(r"\.(jpg|jpeg|gif|png)($|\?)", uri, re.IGNORECASE):
+                    host = http.headers.get("host", "")
+                    if host:
+                        image_urls.add(f"http://{host}{uri}")
+                        filename = os.path.basename(uri.split("?")[0])
+                    if filename:
+                        image_filenames.add(filename)
+            # Mail parsing
+            if tcp.sport in (25, 587) or tcp.dport in (25, 587):
                 payload = tcp.data.decode('utf-8', errors='ignore')
-                to_match = re.search(r"^To:\s*(.+)$", payload, re.MULTILINE|re.IGNORECASE)
-                if to_match:
-                    emails = re.findall(email_pattern, to_match.group(1))
-                    to_emails.update(emails)
-                from_match = re.search(r"^From:\s*(.+)$", payload, re.MULTILINE|re.IGNORECASE)
-                if from_match:
-                    emails = re.findall(email_pattern, from_match.group(1))
-                    from_emails.update(emails)
+                match = re.search(r"^To:\s*(.+)$", payload, re.MULTILINE | re.IGNORECASE)
+                if match:
+                    to_emails.update(re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+                                                match.group(1)))
+                match = re.search(r"^From:\s*(.+)$", payload, re.MULTILINE | re.IGNORECASE)
+                if match:
+                    from_emails.update(re.findall(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
+                                                  match.group(1)))
         except Exception:
-            # necessary as many packets would otherwise generate an error
             pass
+
     return to_emails, from_emails, image_urls, image_filenames
 
 

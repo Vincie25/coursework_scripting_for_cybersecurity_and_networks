@@ -15,7 +15,8 @@ def stats(packets) ->None:
     dpkt.ip.IP_PROTO_UDP: {"name": "UDP", "counter": 0, "timestamps": []},
     dpkt.ip.IP_PROTO_IGMP: {"name": "IGMP", "counter": 0, "timestamps": []},
     dpkt.ip.IP_PROTO_ICMP: {"name": "IGMP", "counter": 0, "timestamps": []},
-    dpkt.ip.IP_PROTO_ICMP6: {"name": "IGMP", "counter": 0, "timestamps": []}
+    dpkt.ip.IP_PROTO_ICMP6: {"name": "IGMP", "counter": 0, "timestamps": []},
+    dpkt.ip.IP_PROTO_IP6: {"name": "IGMP", "counter": 0, "timestamps": []},
     }
     for ts, pkt in packets:
         eth = pkt

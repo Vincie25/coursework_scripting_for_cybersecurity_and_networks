@@ -13,12 +13,12 @@ def time_plot(packets: Any) -> None:
     in a line plot. This provides an overview of the network traffic volume
     over time."""
     try:
-        interval_size = timedelta(seconds=5)
+        interval_size = timedelta(seconds=30)
         start = packets[0][0]
         end = start + interval_size
         count: int = 0
         interval_times: list = []
-        interval_counts: list[int] = []
+        interval_counts: list = []
         for ts, unused_pkt in packets:
             if ts < end:
                 count += 1

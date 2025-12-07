@@ -29,8 +29,10 @@ def stats(packets: Any) -> None:
                 protocols[ip.p]["lengths"].append(len(eth))
     except AttributeError as e:
         sys.stderr.write(f"Invalid packet structure: {e}\n")
-    except (TypeError, ValueError) as e:
-        sys.stderr.write(f"Data processing error: {e}\n")
+    except TypeError as e:
+        sys.stderr.write(f"Data processing TypeError: invalid data type {e}\n")
+    except ValueError as e:
+        sys.stderr.write(f"Data processing ValueError: invalid value {e}\n")
     print(f"{'Protocol':<12}"
           f"{'Count':>8}"
           f"{'First':>27}"

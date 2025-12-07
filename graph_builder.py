@@ -28,7 +28,7 @@ def graph(pcap: Any) -> None:
     except AttributeError as e:
         sys.stderr.write(f"Invalid packet structure: {e}\n")
         return
-    except (OSError, ValueError) as e:
+    except OSError as e:
         sys.stderr.write(f"IP conversion error: {e}\n")
         return
     try:

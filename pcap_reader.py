@@ -30,7 +30,7 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:
         sys.stderr.write("File not found\n")
     except dpkt.UnpackError:
         sys.stderr.write("Unable to unpack the file\n")
-    except (ValueError, AttributeError) as e:
+    except AttributeError as e:
         sys.stderr.write(f"Parser error: {e}\n")
     return packets
 

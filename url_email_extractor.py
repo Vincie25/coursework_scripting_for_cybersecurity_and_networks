@@ -52,7 +52,9 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
                         re.findall(
                             r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
                             match.group(1)))
-        except (dpkt.UnpackError, dpkt.NeedData):
+        except dpkt.UnpackError:
+            pass
+        except dpkt.NeedData:
             pass
         except UnicodeDecodeError:
             pass

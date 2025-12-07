@@ -28,16 +28,21 @@ def time_plot(packets: Any) -> None:
                 start = end
                 end = start + interval_size
                 count = 1
-    except (IndexError, TypeError) as e:
-        sys.stderr.write(f"Packet processing error: {e}\n")
+    except IndexError as e:
+        sys.stderr.write(f"Index error: {e}\n")
+        return
+    except TypeError as e:
+        sys.stderr.write(f"Type error: {e}\n")
         return
     try:
         plt.plot(interval_times, interval_counts)
         threshold = mean(interval_counts) + 2*stdev(interval_counts)
         plt.axhline(y=threshold)
         plt.savefig("timeplot.png")
-    except (IOError, ValueError) as e:
+    except IOError as e:
         sys.stderr.write(f"Plot creation error: {e}\n")
+    except ValueError as e:
+        sys.stderr.write(f"Value error: {e}")
 
 
 if __name__ == "__main__":

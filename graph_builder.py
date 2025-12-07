@@ -1,12 +1,13 @@
 """Used modules"""
 import socket
 import sys
+from typing import Any
 import matplotlib.pyplot as plt
 import networkx as nx
 from pcap_reader import main
 
 
-def graph(pcap: list) -> None:
+def graph(pcap: Any) -> None:
     """
     Generate a directed IP communication graph from a pcap packet list.
     Each packet is evaluated based on its source and destination IP address.
@@ -26,8 +27,10 @@ def graph(pcap: list) -> None:
             counts[key] = counts.get(key, 0) + 1
     except AttributeError as e:
         sys.stderr.write(f"Invalid packet structure: {e}\n")
+        return
     except (OSError, ValueError) as e:
         sys.stderr.write(f"IP conversion error: {e}\n")
+        return
     try:
         ip_graph = nx.DiGraph()
         edge_list = [(src, dst, count) for (src, dst), count in counts.items()]

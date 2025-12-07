@@ -1,10 +1,11 @@
 """Used libaries"""
 import sys
+from typing import Any
 import dpkt
 from pcap_reader import main
 
 
-def stats(packets: list) -> None:
+def stats(packets: Any) -> None:
     """Compute basic protocol statistics from a list of parsed packets.
     This function iterates through all Ethernet frames, identifies IP packets,
     categorizes them by protocol, and records both the packet

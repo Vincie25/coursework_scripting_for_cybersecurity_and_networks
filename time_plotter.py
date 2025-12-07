@@ -2,11 +2,12 @@
 import sys
 from datetime import timedelta
 from statistics import mean, stdev
+from typing import Any
 import matplotlib.pyplot as plt
 from pcap_reader import main
 
 
-def time_plot(packets: list) -> None:
+def time_plot(packets: Any) -> None:
     """Analyzes the timestamps of all packets in the file, groups them into
     fixed-size intervals, and visualizes the number of packets per interval
     in a line plot. This provides an overview of the network traffic volume
@@ -29,6 +30,7 @@ def time_plot(packets: list) -> None:
                 count = 1
     except (IndexError, TypeError) as e:
         sys.stderr.write(f"Packet processing error: {e}\n")
+        return
     try:
         plt.plot(interval_times, interval_counts)
         threshold = mean(interval_counts) + 2*stdev(interval_counts)

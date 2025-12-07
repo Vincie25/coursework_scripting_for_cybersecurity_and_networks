@@ -1,0 +1,15 @@
+[MASTER]
+# Allow dpkt as it's a binary extension
+extension-pkg-allow-list=dpkt
+
+[MESSAGES CONTROL]
+# Disable import-error for packages with C extensions
+disable=E0401
+
+[FORMAT]
+max-line-length=100
+
+[DESIGN]
+max-args=7
+max-locals=15
+max-branches=15

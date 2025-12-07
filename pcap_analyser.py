@@ -31,7 +31,7 @@ def main():
     graph(packets)
     print("[STATUS] Graph saved to network_graph.png\n")
     print("[STATUS] Creating time-based analysis...")
-    time_plot(packets)
+    time_plot(pcap_file)
     print("[STATUS] Plot saved to timeplot1.png\n")
     print("[STATUS] File closed")
     print("[STATUS] Analysis complete!")

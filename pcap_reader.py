@@ -2,7 +2,7 @@
 from datetime import datetime
 import sys
 from typing import Any
-import dpkt
+import dpkt # type: ignore[import-untyped]
 
 
 def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:

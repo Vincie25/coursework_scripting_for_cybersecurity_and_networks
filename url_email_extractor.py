@@ -3,7 +3,7 @@ import os
 import sys
 import re
 from typing import Any
-import dpkt
+import dpkt # type: ignore[import-untyped]
 
 
 def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:

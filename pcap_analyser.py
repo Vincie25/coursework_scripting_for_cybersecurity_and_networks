@@ -2,7 +2,7 @@
 from pcap_reader import main as read_pcap
 from pcap_stats import stats
 from pcap_analyzer import analyzer
-from url_email_extractor import reader  # oder find_emails_and_images?
+from url_email_extractor import reader
 from graph_builder import graph
 from time_plotter import time_plot
 

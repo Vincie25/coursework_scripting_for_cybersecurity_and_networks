@@ -21,6 +21,7 @@ def main() -> None:
     print("[STATUS] Reading pcap file...")
     packets = read_pcap(pcap_file, printout=False, brkfirst=False)
     print(f"[STATUS] Read {len(packets)} packets\n")
+    print("[STATUS] File closed")
     print("[STATUS] Generating protocol statistics...")
     stats(packets)
     print("[STATUS] Extracting emails and URLs...")
@@ -29,11 +30,10 @@ def main() -> None:
     analyzer(packets)
     print("[STATUS] Creating time-based analysis...")
     time_plot(packets)
-    print("[STATUS] Graph saved to network_graph.png\n")
-    print("[STATUS] Plot saved to timeplot1.png\n")
+    print("[STATUS] Plot saved to timeplot.png\n")
     print("[STATUS] Creating network graph...")
     graph(packets)
-    print("[STATUS] File closed")
+    print("[STATUS] Graph saved to network_graph.png\n")
     print("[STATUS] Analysis complete!")
 
 

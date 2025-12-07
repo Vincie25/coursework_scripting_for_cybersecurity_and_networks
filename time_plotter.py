@@ -4,6 +4,7 @@ from datetime import timedelta
 from statistics import mean, stdev
 from typing import Any
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 from pcap_reader import main
 
 
@@ -38,6 +39,11 @@ def time_plot(packets: Any) -> None:
         plt.plot(interval_times, interval_counts)
         threshold = mean(interval_counts) + 2*stdev(interval_counts)
         plt.axhline(y=threshold)
+        ax = plt.gca()
+        ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
+        ax.xaxis.set_major_locator(mdates.SecondLocator(interval=25))
+        plt.xticks(rotation=45)
+        plt.tight_layout()
         plt.savefig("timeplot.png")
     except IOError as e:
         sys.stderr.write(f"Plot creation error: {e}\n")

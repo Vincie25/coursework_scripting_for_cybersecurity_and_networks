@@ -13,8 +13,8 @@ def main():
     1. Protocol statistics
     2. Email/URL extraction
     3. IP flow analysis
-    4. Network graph generation
-    5. Time-based traffic analysis
+    4. Time-based traffic analysis
+    5. Network graph generation
     """
     pcap_file = "evidence-packet-analysis.pcap"
     print("[STATUS] File opened...")
@@ -27,12 +27,12 @@ def main():
     reader(pcap_file)
     print("[STATUS] Analyzing IP flows...")
     analyzer(packets)
+    print("[STATUS] Creating time-based analysis...")
+    time_plot(packets)
+    print("[STATUS] Graph saved to network_graph.png\n")
+    print("[STATUS] Plot saved to timeplot1.png\n")
     print("[STATUS] Creating network graph...")
     graph(packets)
-    print("[STATUS] Graph saved to network_graph.png\n")
-    print("[STATUS] Creating time-based analysis...")
-    time_plot(pcap_file)
-    print("[STATUS] Plot saved to timeplot1.png\n")
     print("[STATUS] File closed")
     print("[STATUS] Analysis complete!")
 

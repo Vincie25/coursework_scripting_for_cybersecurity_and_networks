@@ -17,8 +17,6 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:
             pcap = dpkt.pcap.Reader(open_file)
             for ts, buf in pcap:
                 # each tuple contains a timestamp
-                # prefixing the variable name with unused_ makes this clear and
-                # avoids pylint W0612: Unused Variable warning
                 eth = dpkt.ethernet.Ethernet(buf)
                 if printout:
                     sys.stderr.write(f"#<INFO> eth ethernet packet: {repr(eth)}\n")
@@ -33,7 +31,7 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:
     except dpkt.UnpackError:
         sys.stderr.write("Unable to unpack the file\n")
     except (ValueError, AttributeError) as e:
-        sys.stderr.write(f"Parser error: {e}\n")        
+        sys.stderr.write(f"Parser error: {e}\n")
     return packets
 
 

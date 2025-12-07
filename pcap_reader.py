@@ -6,7 +6,6 @@ import dpkt
 
 def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> list:
     """Parse a pcap file and extract timestamped Ethernet frames.
-
     This function opens a pcap file, iterates through its packets, and converts
     each buffer into a dpkt Ethernet object. The result is returned as a list
     of tuples containing the packet timestamp (converted to a datetime object)
@@ -14,8 +13,8 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> list:
     packets = []
     try:
         with open(pcapfile, "rb") as open_file:
-            pcap = dpkt.pcap.Reader(open_file)
             sys.stderr.write("File opened")
+            pcap = dpkt.pcap.Reader(open_file)
             for ts, buf in pcap:
                 # each tuple contains a timestamp
                 # prefixing the variable name with unused_ makes this clear and
@@ -33,8 +32,8 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> list:
         sys.stderr.write("File not found")
     except dpkt.UnpackError:
         print("Unable to unpack the file")
-    except Exception:
-        sys.stderr.write("Parser error")
+    except (ValueError, AttributeError) as e:
+        sys.stderr.write(f"Parser error: {e}\n")
     finally:
         sys.stderr.write("File closed")
     return packets

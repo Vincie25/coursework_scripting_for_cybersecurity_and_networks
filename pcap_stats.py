@@ -1,29 +1,35 @@
 """Used libaries"""
+import sys
 import dpkt
 from pcap_reader import main
 
 
-def stats(packets: any) -> None:
+def stats(packets: list) -> None:
     """Compute basic protocol statistics from a list of parsed packets.
     This function iterates through all Ethernet frames, identifies IP packets,
     categorizes them by protocol, and records both the packet
     count and the timestamps of their occurrences. Additionally, it prints the
     earliest and latest timestamp for each protocol."""
     protocols: dict = {}
-    for ts, pkt in packets:
-        eth = pkt
-        if eth.type == dpkt.ethernet.ETH_TYPE_IP:
-            ip = eth.data
-            if ip.p not in protocols:
-                protocols[ip.p] = {
-                    "name": f"Protocol-{ip.p}",
-                    "counter": 0,
-                    "timestamps": [],
-                    "lengths": []
-                }
-            protocols[ip.p]["counter"] += 1
-            protocols[ip.p]["timestamps"].append(ts)
-            protocols[ip.p]["lengths"].append(len(eth))
+    try:
+        for ts, pkt in packets:
+            eth = pkt
+            if eth.type == dpkt.ethernet.ETH_TYPE_IP:
+                ip = eth.data
+                if ip.p not in protocols:
+                    protocols[ip.p] = {
+                        "name": f"Protocol-{ip.p}",
+                        "counter": 0,
+                        "timestamps": [],
+                        "lengths": []
+                    }
+                protocols[ip.p]["counter"] += 1
+                protocols[ip.p]["timestamps"].append(ts)
+                protocols[ip.p]["lengths"].append(len(eth))
+    except AttributeError as e:
+        sys.stderr.write(f"Invalid packet structure: {e}\n")
+    except (TypeError, ValueError) as e:
+        sys.stderr.write(f"Data processing error: {e}\n")
     print(f"{'Protocol':<12}"
           f"{'Count':>8}"
           f"{'First':>27}"

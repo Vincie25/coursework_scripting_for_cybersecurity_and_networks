@@ -61,11 +61,10 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
     return to_emails, from_emails, image_urls, image_filenames
 
 
-def reader() -> None:
+def reader(pcap_file) -> None:
     """Reading data of the pcap file"""
     # should get results with filtered2.pcap but none with filtered3.pcap
     try:
-        pcap_file = "evidence-packet-analysis.pcap"
         with open(pcap_file, "rb") as f:
             pcap = dpkt.pcap.Reader(f)
             print("============ URL and E-Mail extractor ============")
@@ -98,4 +97,5 @@ def reader() -> None:
 
 
 if __name__ == '__main__':
-    reader()
+    PCAP = "evidence-packet-analysis.pcap"
+    reader(PCAP)

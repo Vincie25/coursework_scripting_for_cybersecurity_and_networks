@@ -46,7 +46,6 @@ def graph(pcap: Any) -> None:
             f"Components:{len(list(nx.weakly_connected_components(ip_graph)))}"
               )
         plt.savefig("network_graph.png")
-        plt.show()
     except IOError as e:
         sys.stderr.write(f"Failed to save graph: {e}\n")
 

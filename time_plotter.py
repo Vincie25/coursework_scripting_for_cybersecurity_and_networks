@@ -35,8 +35,7 @@ def time_plot(packets: Any) -> None:
         plt.plot(interval_times, interval_counts)
         threshold = mean(interval_counts) + 2*stdev(interval_counts)
         plt.axhline(y=threshold)
-        plt.savefig("timeplot1.png")
-        plt.show()
+        plt.savefig("timeplot.png")
     except (IOError, ValueError) as e:
         sys.stderr.write(f"Plot creation error: {e}\n")
 

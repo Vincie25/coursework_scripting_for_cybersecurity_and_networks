@@ -17,6 +17,7 @@ def main():
     5. Time-based traffic analysis
     """
     pcap_file = "evidence-packet-analysis.pcap"
+    print("[STATUS] File opened...")
     print("[STATUS] Reading pcap file...")
     packets = read_pcap(pcap_file, printout=False, brkfirst=False)
     print(f"[STATUS] Read {len(packets)} packets\n")
@@ -32,6 +33,7 @@ def main():
     print("[STATUS] Creating time-based analysis...")
     time_plot(packets)
     print("[STATUS] Plot saved to timeplot1.png\n")
+    print("[STATUS] File closed")
     print("[STATUS] Analysis complete!")
 
 if __name__ == '__main__':

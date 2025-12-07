@@ -14,7 +14,6 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:
     packets: list = []
     try:
         with open(pcapfile, "rb") as open_file:
-            sys.stderr.write("File opened\n")
             pcap = dpkt.pcap.Reader(open_file)
             for ts, buf in pcap:
                 # each tuple contains a timestamp
@@ -29,7 +28,6 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:
                 packets.append((datetime.fromtimestamp(ts), eth))
                 if brkfirst:  # stop after the first packet
                     break
-        sys.stderr.write("File closed\n")
     except IOError:
         sys.stderr.write("File not found\n")
     except dpkt.UnpackError:

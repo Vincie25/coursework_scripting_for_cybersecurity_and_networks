@@ -32,7 +32,7 @@ def graph(pcap: Any) -> None:
         sys.stderr.write(f"IP conversion error: {e}\n")
         return
     try:
-        ip_graph = nx.DiGraph()
+        ip_graph: Any = nx.DiGraph()
         edge_list = [(src, dst, count) for (src, dst), count in counts.items()]
         ip_graph.add_weighted_edges_from(edge_list)
         pos = nx.shell_layout(ip_graph)

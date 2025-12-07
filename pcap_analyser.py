@@ -7,7 +7,7 @@ from graph_builder import graph
 from time_plotter import time_plot
 
 
-def main():
+def main() -> None:
     """Run complete PCAP analysis pipeline.
     Reads evidence-packet-analysis.pcap and performs:
     1. Protocol statistics

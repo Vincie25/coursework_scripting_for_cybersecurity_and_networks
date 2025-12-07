@@ -17,7 +17,7 @@ def graph(pcap: Any) -> None:
     """
     try:
         counts: dict[tuple[str, str], int] = {}
-        plt.figure(figsize=(28, 12))
+        plt.figure(figsize=(20, 10))
         for unused_ts, i in pcap:
             eth = i
             ip = eth.data

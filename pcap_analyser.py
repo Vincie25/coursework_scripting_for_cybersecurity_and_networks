@@ -36,5 +36,6 @@ def main():
     print("[STATUS] File closed")
     print("[STATUS] Analysis complete!")
 
+
 if __name__ == '__main__':
     main()

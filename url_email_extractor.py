@@ -4,6 +4,7 @@ import sys
 import re
 from typing import Any
 import dpkt # type: ignore[import-untyped]
+from pcap_reader import main
 
 
 def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
@@ -15,7 +16,7 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
     image_filenames = set()
     for (unused_time_s, buf) in pcap:
         try:
-            ip_ad = dpkt.ethernet.Ethernet(buf).data
+            ip_ad = buf.data
             tcp = ip_ad.data
             uri = ""
             filename = ""
@@ -52,9 +53,7 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
                         re.findall(
                             r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}",
                             match.group(1)))
-        except dpkt.UnpackError:
-            pass
-        except dpkt.NeedData:
+        except (dpkt.UnpackError, dpkt.NeedData):
             pass
         except UnicodeDecodeError:
             pass
@@ -63,41 +62,39 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
     return to_emails, from_emails, image_urls, image_filenames
 
 
-def reader(pcap_file) -> None:
+def reader(pcap: Any) -> None:
     """Reading data of the pcap file"""
     # should get results with filtered2.pcap but none with filtered3.pcap
     try:
-        with open(pcap_file, "rb") as f:
-            pcap = dpkt.pcap.Reader(f)
-            print("============ URL and E-Mail extractor ============")
-            print(f'[*] Analysing {pcap_file}')
-            (to_emails,
-             from_emails,
-             image_urls,
-             image_filenames) = find_emails_and_images(pcap)
-            print("To Emails:")
-            print("----------- Mails -----------")
-            for email in sorted(to_emails):
-                print(f"  {email}")
-            print("From Emails:")
-            print("----------- Mails -----------")
-            for email in sorted(from_emails):
-                print(f"  {email}")
-            print("Image URLs:")
-            print("----------- URLs -----------")
-            for url in sorted(image_urls):
-                print(f"  {url}")
-            print("Image Filenames:")
-            print("----------- Filenames -----------")
-            for filename in sorted(image_filenames):
-                print(f"  {filename}")
-            print("============== End ===============")
+        print("============ URL and E-Mail extractor ============")
+        (to_emails,
+         from_emails,
+         image_urls,
+         image_filenames) = find_emails_and_images(pcap)
+        print("To Emails:")
+        print("----------- Mails -----------")
+        for email in sorted(to_emails):
+            print(f"  {email}")
+        print("From Emails:")
+        print("----------- Mails -----------")
+        for email in sorted(from_emails):
+            print(f"  {email}")
+        print("Image URLs:")
+        print("----------- URLs -----------")
+        for url in sorted(image_urls):
+            print(f"  {url}")
+        print("Image Filenames:")
+        print("----------- Filenames -----------")
+        for filename in sorted(image_filenames):
+            print(f"  {filename}")
+        print("============== End ===============")
     except IOError as e:
         sys.stderr.write(f"Failed to open file: {e}\n")
-    except dpkt.UnpackError as e:
+    except dpkt.NeedData as e:
         sys.stderr.write(f"Failed to parse pcap: {e}\n")
 
 
 if __name__ == '__main__':
     PCAP = "evidence-packet-analysis.pcap"
-    reader(PCAP)
+    packet = main(PCAP, printout=False, brkfirst=False)
+    reader(packet)

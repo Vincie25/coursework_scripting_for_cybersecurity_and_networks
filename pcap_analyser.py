@@ -23,7 +23,7 @@ def main() -> None:
     print(f"[STATUS] Read {len(packets)} packets\n")
     print("[STATUS] File closed")
     print("[STATUS] Extracting emails and URLs...")
-    reader(pcap_file)
+    reader(packets)
     print("[STATUS] Generating protocol statistics...")
     stats(packets)
     print("[STATUS] Creating time-based analysis...")

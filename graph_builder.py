@@ -1,13 +1,13 @@
 """Used modules"""
-import socket
 import sys
 from typing import Any
 import matplotlib.pyplot as plt
 import networkx as nx
 from pcap_reader import main
+from pcap_analyzer import analyzer
 
 
-def graph(pcap: Any) -> None:
+def graph(flow: dict[str, int]) -> None:
     """
     Generate a directed IP communication graph from a pcap packet list.
     Each packet is evaluated based on its source and destination IP address.
@@ -16,24 +16,12 @@ def graph(pcap: Any) -> None:
     and visualizes it using matplotlib. Graph statistics are printed to stdout.
     """
     try:
-        counts: dict[tuple[str, str], int] = {}
-        plt.figure(figsize=(20, 10))
-        for unused_ts, i in pcap:
-            eth = i
-            ip = eth.data
-            source_ip = socket.inet_ntoa(ip.src)
-            destination_ip = socket.inet_ntoa(ip.dst)
-            key = (source_ip, destination_ip)
-            counts[key] = counts.get(key, 0) + 1
-    except AttributeError as e:
-        sys.stderr.write(f"Invalid packet structure: {e}\n")
-        return
-    except OSError as e:
-        sys.stderr.write(f"IP conversion error: {e}\n")
-        return
-    try:
+        plt.figure(figsize=(15, 10))
         ip_graph: Any = nx.DiGraph()
-        edge_list = [(src, dst, count) for (src, dst), count in counts.items()]
+        edge_list = []
+        for path, count in flow.items():
+            src, dst = path.split("->")
+            edge_list.append((src, dst, count))
         ip_graph.add_weighted_edges_from(edge_list)
         pos = nx.shell_layout(ip_graph)
         nx.draw_networkx(ip_graph, pos, with_labels=True, font_weight='bold')
@@ -53,4 +41,8 @@ def graph(pcap: Any) -> None:
 if __name__ == "__main__":
     PCAP = "evidence-packet-analysis.pcap"
     packets = main(PCAP, printout=False, brkfirst=False)
-    graph(packets)
+    flows = analyzer(packets)
+    sorted_flows = sorted(flows.items(), key=lambda x: x[1], reverse=True)
+    for k, v in sorted_flows:
+        print(k, v)
+    graph(flows)

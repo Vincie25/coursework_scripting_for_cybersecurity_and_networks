@@ -26,12 +26,14 @@ def graph(flow: dict[str, int]) -> None:
         nx.draw_networkx(ip_graph, pos, with_labels=True, font_weight='bold')
         edge_labels = nx.get_edge_attributes(ip_graph, 'weight')
         nx.draw_networkx_edge_labels(ip_graph, pos, edge_labels=edge_labels)
-        print(f"Nodes: {ip_graph.number_of_nodes()}")
-        print(f"Edges: {ip_graph.number_of_edges()}")
-        print(f"Weakly connected: {nx.is_weakly_connected(ip_graph)}")
+        print(f"Nodes: {ip_graph.number_of_nodes()}")  # how many were involved
+        print(f"Edges: {ip_graph.number_of_edges()}")  # total of connection
+        print(
+            f"Weakly connected: {nx.is_weakly_connected(ip_graph)}"
+              )  # True: all somehow connected False: at least 1 group isolated
         print(
             f"Components:{len(list(nx.weakly_connected_components(ip_graph)))}"
-              )
+              )  # number of isolated members
         plt.savefig("network_graph.png")
     except IOError as e:
         sys.stderr.write(f"Failed to save graph: {e}\n")

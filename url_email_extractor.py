@@ -24,7 +24,7 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
             filename = ""
             # HTTP parsing
             if tcp.dport == 80:
-                http = dpkt.http.Request(tcp.data)
+                http = dpkt.http.Request(tcp.data)  # interpreting request
                 if http.method == "GET":
                     uri = http.uri
                 if uri and re.search(r"\.(jpg|jpeg|gif|png)($|\?)",
@@ -32,6 +32,7 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
                     host = http.headers.get("host", "")
                     if host:
                         image_urls.add(f"http://{host}{uri}")
+                        # Split possible ? from uri to add in set later
                         filename = os.path.basename(uri.split("?")[0])
                     if filename:
                         image_filenames.add(filename)

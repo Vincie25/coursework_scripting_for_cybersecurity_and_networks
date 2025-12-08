@@ -16,21 +16,21 @@ def time_plot(packets: Any) -> None:
        and highlights it in the plot.
     """
     try:
-        interval_size = timedelta(seconds=10)
-        start = packets[0][0]
-        end = start + interval_size
+        interval_size = timedelta(seconds=10)  # Intervall size
+        start = packets[0][0]  # Start of the 1st interval
+        end = start + interval_size  # End of the 1st interval
         count: int = 0
         interval_times: list = []
         interval_counts: list = []
         for ts, unused_pkt in packets:
-            if ts < end:
+            if ts < end:  # counting packages from start-end
                 count += 1
-            else:
+            else:  # if ts is over end save all counts before, start new
                 interval_times.append(start)
                 interval_counts.append(count)
                 start = end
                 end = start + interval_size
-                count = 1
+                count = 1  # 1st package of new interval
     except IndexError as e:
         sys.stderr.write(f"Index error: {e}\n")
         return
@@ -39,9 +39,10 @@ def time_plot(packets: Any) -> None:
         return
     try:
         plt.plot(interval_times, interval_counts)
+        # to recognize a suspiciously high number of packages
         threshold = mean(interval_counts) + 2*stdev(interval_counts)
         plt.axhline(y=threshold)
-        ax = plt.gca()
+        ax = plt.gca()  # Get current axes
         ax.xaxis.set_major_formatter(mdates.DateFormatter('%H:%M:%S'))
         ax.xaxis.set_major_locator(mdates.SecondLocator(interval=25))
         plt.xticks(rotation=45)

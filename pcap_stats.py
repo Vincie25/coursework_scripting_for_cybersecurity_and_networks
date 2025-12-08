@@ -1,7 +1,7 @@
 """Used libaries"""
 import sys
 from typing import Any
-import dpkt # type: ignore[import-untyped]
+import dpkt  # type: ignore[import-untyped]
 from pcap_reader import main
 
 

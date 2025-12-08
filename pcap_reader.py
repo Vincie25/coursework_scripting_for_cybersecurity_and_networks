@@ -2,7 +2,7 @@
 from datetime import datetime
 import sys
 from typing import Any
-import dpkt # type: ignore[import-untyped]
+import dpkt  # type: ignore[import-untyped]
 
 
 def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:
@@ -19,10 +19,10 @@ def main(pcapfile: str, printout: bool = True, brkfirst: bool = True) -> Any:
                 # each tuple contains a timestamp
                 eth = dpkt.ethernet.Ethernet(buf)
                 if printout:
-                    sys.stderr.write(f"#<INFO> eth ethernet packet: {repr(eth)}\n")
+                    sys.stderr.write(f"eth ethernet packet: {repr(eth)}\n")
                 ip_ad = eth.data
                 if printout:
-                    sys.stderr.write(f"#<INFO> eth.data: {repr(ip_ad)}\n")
+                    sys.stderr.write(f"eth.data: {repr(ip_ad)}\n")
                 packets.append((datetime.fromtimestamp(ts), eth))
                 if brkfirst:  # stop after the first packet
                     break

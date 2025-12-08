@@ -42,7 +42,4 @@ if __name__ == "__main__":
     PCAP = "evidence-packet-analysis.pcap"
     packets = main(PCAP, printout=False, brkfirst=False)
     flows = analyzer(packets)
-    sorted_flows = sorted(flows.items(), key=lambda x: x[1], reverse=True)
-    for k, v in sorted_flows:
-        print(k, v)
     graph(flows)

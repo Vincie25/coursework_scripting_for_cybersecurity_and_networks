@@ -22,6 +22,9 @@ def analyzer(pcap: Any) -> dict[str, int]:
         sys.stderr.write(f"Invalid packet structure: {e}\n")
     except OSError as e:
         sys.stderr.write(f"IP address conversion error: {e}\n")
+    sorted_flows = sorted(flows.items(), key=lambda x: x[1], reverse=True)
+    for k, v in sorted_flows:
+        print(k, v)
     return flows
 
 

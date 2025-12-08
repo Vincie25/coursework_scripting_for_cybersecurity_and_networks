@@ -6,11 +6,13 @@ from pcap_reader import main
 
 
 def stats(packets: Any) -> None:
-    """Compute basic protocol statistics from a list of parsed packets.
-    This function iterates through all Ethernet frames, identifies IP packets,
-    categorizes them by protocol, and records both the packet
-    count and the timestamps of their occurrences. Additionally, it prints the
-    earliest and latest timestamp for each protocol."""
+    """Compute and display protocol statistics from parsed packets.
+       Analyzes all Ethernet frames, identifies IP packets,
+       and categorizes them adaptively by protocol.
+       For each protocol, calculates packet count, first/last timestamps,
+       and mean packet length. Results are displayed in
+       tabular format.
+    """
     protocols: dict = {}
     try:
         for ts, pkt in packets:

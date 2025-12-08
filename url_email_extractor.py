@@ -8,15 +8,17 @@ from pcap_reader import main
 
 
 def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
-    """in current form, finds any gif files downloaded and prints
-       request source (Downloader), gif URI and destination (provider) IP"""
+    """Extract email addresses and image URLs from network packets.
+       Parses HTTP traffic (port 80) for image file requests
+       and SMTP traffic for email addresses in To:/From: fields.
+    """
     to_emails = set()
     from_emails = set()
     image_urls = set()
     image_filenames = set()
-    for (unused_time_s, buf) in pcap:
+    for (unused_time_s, eth) in pcap:
         try:
-            ip_ad = buf.data
+            ip_ad = eth.data
             tcp = ip_ad.data
             uri = ""
             filename = ""
@@ -63,8 +65,7 @@ def find_emails_and_images(pcap: Any) -> tuple[set, set, set, set]:
 
 
 def reader(pcap: Any) -> None:
-    """Reading data of the pcap file"""
-    # should get results with filtered2.pcap but none with filtered3.pcap
+    """Display extracted emails and image URLs in formatted output."""
     try:
         print("============ URL and E-Mail extractor ============")
         (to_emails,

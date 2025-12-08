@@ -17,23 +17,25 @@ def main() -> None:
     5. Network graph generation
     """
     pcap_file = "evidence-packet-analysis.pcap"
-    print("[STATUS] File opened...")
+
     print("[STATUS] Reading pcap file...")
     packets = list(read_pcap(pcap_file, printout=False, brkfirst=False))
-    print(f"[STATUS] Read {len(packets)} packets\n")
-    print("[STATUS] File closed")
-    print("[STATUS] Extracting emails and URLs...")
-    reader(packets)
+    print(f"[STATUS] Loaded {len(packets)} packets\n")
     print("[STATUS] Generating protocol statistics...")
     stats(packets)
-    print("[STATUS] Creating time-based analysis...")
-    time_plot(packets)
-    print("[STATUS] Plot saved to timeplot.png\n")
+    print()
+    print("[STATUS] Extracting emails and URLs...")
+    reader(packets)
+    print()
     print("[STATUS] Analyzing IP flows...")
     flow = analyzer(packets)
+    print()
+    print("[STATUS] Creating time-based analysis...")
+    time_plot(packets)
+    print("[STATUS] Saved timeplot.png\n")
     print("[STATUS] Creating network graph...")
     graph(flow)
-    print("[STATUS] Graph saved to network_graph.png")
+    print("[STATUS] Saved network_graph.png\n")
     print("[STATUS] Analysis complete!")
 
 

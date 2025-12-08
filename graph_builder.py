@@ -9,11 +9,10 @@ from pcap_analyzer import analyzer
 
 def graph(flow: dict[str, int]) -> None:
     """
-    Generate a directed IP communication graph from a pcap packet list.
-    Each packet is evaluated based on its source and destination IP address.
-    The function counts occurrences of each (src → dst) flow, constructs a
-    directed graph where edge weights represent communication frequency,
-    and visualizes it using matplotlib. Graph statistics are printed to stdout.
+    Generate and display a directed network graph from IP flow data.
+    Creates a weighted, directed graph where nodes represent IP addresses
+    and edges represent communication flows. Edge weights indicate the
+    number of packets sent between IP pairs.
     """
     try:
         plt.figure(figsize=(15, 10))

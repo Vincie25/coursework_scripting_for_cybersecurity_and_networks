@@ -9,10 +9,12 @@ from pcap_reader import main
 
 
 def time_plot(packets: Any) -> None:
-    """Analyzes the timestamps of all packets in the file, groups them into
-    fixed-size intervals, and visualizes the number of packets per interval
-    in a line plot. This provides an overview of the network traffic volume
-    over time."""
+    """Analyze and visualize packet traffic over time.
+       Groups packets into fixed-size time intervals
+       and plots packet count per interval.
+       Calculates anomaly threshold (mean + 2 standard deviations)
+       and highlights it in the plot.
+    """
     try:
         interval_size = timedelta(seconds=10)
         start = packets[0][0]

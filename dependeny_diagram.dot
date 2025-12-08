@@ -1,0 +1,100 @@
+digraph G {
+concentrate=true;
+splines="ortho";
+rankdir="LR";
+subgraph legend{
+    rank = min;
+    label = "legend";
+    Legend [shape=none, margin=0, label = <
+        <table cellspacing="0" cellpadding="0" border="1"><tr><td>Code2flow Legend</td></tr><tr><td>
+        <table cellspacing="0">
+        <tr><td>Regular function</td><td width="50px" bgcolor='#cccccc'></td></tr>
+        <tr><td>Trunk function (nothing calls this)</td><td bgcolor='#966F33'></td></tr>
+        <tr><td>Leaf function (this calls nothing else)</td><td bgcolor='#6db33f'></td></tr>
+        <tr><td>Function call</td><td><font color='black'>&#8594;</font></td></tr>
+        </table></td></tr></table>
+        >];
+}node_ab80dde7 [label="0: (global)()" name="graph_builder::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_109bf481 [label="10: graph()" name="graph_builder::graph" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_147b680a [label="0: (global)()" name="pcap_analyser::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_c907960b [label="10: main()" name="pcap_analyser::main" shape="rect" style="rounded,filled" fillcolor="#cccccc" ];
+node_126927bc [label="0: (global)()" name="pcap_analyzer::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_798f3188 [label="8: analyzer()" name="pcap_analyzer::analyzer" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_47788c34 [label="0: (global)()" name="pcap_reader::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_dcf3e513 [label="8: main()" name="pcap_reader::main" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_1cb403a0 [label="0: (global)()" name="pcap_stats::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_3d3a69bd [label="8: stats()" name="pcap_stats::stats" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_14f4d173 [label="0: (global)()" name="time_plotter::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_1eac1d76 [label="11: time_plot()" name="time_plotter::time_plot" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_d725e16c [label="0: (global)()" name="url_email_extractor::(global)" shape="rect" style="rounded,filled" fillcolor="#966F33" ];
+node_1700ec02 [label="9: find_emails_and_images()" name="url_email_extractor::find_emails_and_images" shape="rect" style="rounded,filled" fillcolor="#6db33f" ];
+node_3d68b561 [label="66: reader()" name="url_email_extractor::reader" shape="rect" style="rounded,filled" fillcolor="#cccccc" ];
+node_ab80dde7 -> node_109bf481 [color="#CC79A7" penwidth="2"];
+node_ab80dde7 -> node_798f3188 [color="#CC79A7" penwidth="2"];
+node_ab80dde7 -> node_dcf3e513 [color="#CC79A7" penwidth="2"];
+node_147b680a -> node_c907960b [color="#56B4E9" penwidth="2"];
+node_c907960b -> node_109bf481 [color="#009E73" penwidth="2"];
+node_c907960b -> node_798f3188 [color="#009E73" penwidth="2"];
+node_c907960b -> node_dcf3e513 [color="#009E73" penwidth="2"];
+node_c907960b -> node_3d3a69bd [color="#009E73" penwidth="2"];
+node_c907960b -> node_1eac1d76 [color="#009E73" penwidth="2"];
+node_c907960b -> node_3d68b561 [color="#009E73" penwidth="2"];
+node_126927bc -> node_798f3188 [color="#F0E442" penwidth="2"];
+node_126927bc -> node_dcf3e513 [color="#F0E442" penwidth="2"];
+node_47788c34 -> node_dcf3e513 [color="#F0E442" penwidth="2"];
+node_1cb403a0 -> node_dcf3e513 [color="#000000" penwidth="2"];
+node_1cb403a0 -> node_3d3a69bd [color="#000000" penwidth="2"];
+node_14f4d173 -> node_dcf3e513 [color="#009E73" penwidth="2"];
+node_14f4d173 -> node_1eac1d76 [color="#009E73" penwidth="2"];
+node_d725e16c -> node_3d68b561 [color="#F0E442" penwidth="2"];
+node_3d68b561 -> node_1700ec02 [color="#E69F00" penwidth="2"];
+subgraph cluster_3d8a6a73 {
+    node_109bf481 node_ab80dde7;
+    label="File: graph_builder";
+    name="graph_builder";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_792683eb {
+    node_c907960b node_147b680a;
+    label="File: pcap_analyser";
+    name="pcap_analyser";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_26cea39d {
+    node_798f3188 node_126927bc;
+    label="File: pcap_analyzer";
+    name="pcap_analyzer";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_37adaf20 {
+    node_dcf3e513 node_47788c34;
+    label="File: pcap_reader";
+    name="pcap_reader";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_4bee1a14 {
+    node_3d3a69bd node_1cb403a0;
+    label="File: pcap_stats";
+    name="pcap_stats";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_bcdce0a1 {
+    node_1eac1d76 node_14f4d173;
+    label="File: time_plotter";
+    name="time_plotter";
+    style="filled";
+    graph[style=dotted];
+};
+subgraph cluster_ff96eb56 {
+    node_1700ec02 node_3d68b561 node_d725e16c;
+    label="File: url_email_extractor";
+    name="url_email_extractor";
+    style="filled";
+    graph[style=dotted];
+};
+}
